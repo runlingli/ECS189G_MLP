@@ -16,9 +16,9 @@ import numpy as np
 class Method_MLP(method, nn.Module):
     data = None
     # it defines the max rounds to train the model
-    max_epoch = 501
+    max_epoch = 201
     # it defines the learning rate for gradient descent based optimizer for model learning
-    learning_rate = 5e-3
+    learning_rate = 1e-3
 
     # it defines the MLP model architecture, e.g.,
     # how many layers, size of variables in each layer, activation function, etc.
@@ -26,11 +26,13 @@ class Method_MLP(method, nn.Module):
     def __init__(self, mName, mDescription):
         method.__init__(self, mName, mDescription)
         nn.Module.__init__(self)
-        self.fc_layer_1 = nn.Linear(784, 256) # First hidden layer: 784 input features, 256 output features
+        self.fc_layer_1 = nn.Linear(784, 512) # First hidden layer: 784 input features
         self.activation_func_1 = nn.ReLU() 
-        self.fc_layer_2 = nn.Linear(256, 128) # Second hidden layer: 256 input features, 128 output features
+        self.fc_layer_2 = nn.Linear(512, 256) 
         self.activation_func_2 = nn.ReLU() 
-        self.fc_layer_3 = nn.Linear(128, 10) # Third layer: 128 input features, 10 output features (output)
+        self.fc_layer_3 = nn.Linear(256, 128) 
+        self.activation_func_3 = nn.ReLU() 
+        self.fc_layer_4 = nn.Linear(128, 10) # Third layer: 128 input features, 10 output features (output)
 
     # it defines the forward propagation function for input x
     # this function will calculate the output layer by layer
@@ -38,9 +40,10 @@ class Method_MLP(method, nn.Module):
     def forward(self, x):
         '''Forward propagation'''
         # hidden layer embeddings
-        h1 = self.activation_func_1(self.fc_layer_1(x)) # First hidden layer, 256 output features
-        h2 = self.activation_func_2(self.fc_layer_2(h1)) # Second hidden layer, 128 output features
-        y_pred = self.fc_layer_3(h2) # Output layer, 10 output features
+        h1 = self.activation_func_1(self.fc_layer_1(x)) 
+        h2 = self.activation_func_2(self.fc_layer_2(h1)) 
+        h3 = self.activation_func_3(self.fc_layer_3(h2)) 
+        y_pred = self.fc_layer_4(h3) # Output layer, 10 output features
 
         return y_pred
 
